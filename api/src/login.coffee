@@ -42,11 +42,11 @@ define [
 		 * 로그인.
 		 * @param  {string} provider  tosq, facebook, googleplus, etc...
 		 * @param  {object} user      id, passwd
-		 * @param  {object} _callback return res, error
+		 * @param  {object} callback return res, error
 		 * @param  {object} options   fileds
 		 * @return {object}           ajax 
 		###
-		login: (provider, user, _callback, options) ->
+		login: (provider, user, callback, options) ->
 			if @server is null 
 					console.error 'not initialize server.'
 					return
@@ -63,7 +63,7 @@ define [
 					# @set res.user, res.user.permissions
 					@tokenModule.setToken res.token
 					@setLoginState true
-					## set user in _callback, 앞단에서 아래 코드 추가.
+					## set user in callback, 앞단에서 아래 코드 추가.
 					# elem = $('<div class="img user"></div>')
 					# utils.setImage elem, user.picture_url
 
@@ -71,23 +71,23 @@ define [
 
 					##
 
-					_callback.success(res) if _callback && _callback.success
+					callback.success(res) if callback && callback.success
 				error: (er) =>
 					## 앞단에서 아래 코드 추가.
 					# if er.type == 'user.incorrect_email'
 					#     tosqToast.showError $.t('form.warning.incorrect_email')
 					# else if er.type == 'user.incorrect_passwd'
 					#     tosqToast.showError $.t('form.warning.incorrect_passwd')
-					_callback.error(er) if _callback && _callback.error
+					callback.error(er) if callback && callback.error
 			})
 
 
 		###
 		 * 로그아웃.
-		 * @param  {object} _callback return res, error
+		 * @param  {object} callback return res, error
 		 * @return {object}           ajax
 		###
-		logout: (_callback) ->
+		logout: (callback) ->
 			if @server is null 
 				console.error 'not initialize server.'
 				return
@@ -100,11 +100,13 @@ define [
 				data: {}
 				'type': 'POST'
 				success: (res) =>
-					_callback.success(res) if _callback && _callback.success
+					callback.success(res) if callback && callback.success
 				error: (er) =>
-					_callback.error(er) if _callback && _callback.error
+					callback.error(er) if callback && callback.error
 				complete: () =>
 					@tokenModule.clear()
 					@setLoginState false
-					_callback.complete(res) if _callback && _callback.complete
+					callback.complete(res) if callback && callback.complete
 			})
+
+	return login
