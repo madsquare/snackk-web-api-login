@@ -9,6 +9,8 @@
   } else if (typeof exports === 'object') {
     module.exports = factory();
   } else {
-    root.login = factory();
+	if typeof root.snackkModule === 'undefined'
+		root.snackkModule = {}
+	root.snackkModule.login = factory();
   }
 }(this, function () {
