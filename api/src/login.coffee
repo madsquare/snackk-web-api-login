@@ -5,11 +5,11 @@ define [
 
     login =
         server : null
-        apiModule : null
+        tokenModule : null
 
-        init : (server, apiModule) ->
+        init : (server, tokenModule) ->
             @server = server
-            @apiModule = apiModule
+            @tokenModule = tokenModule
             return
 
         setLoginState : (boolean) ->
@@ -23,21 +23,22 @@ define [
 
 		# request authorize
 		# login
-        login: (provider, user, _callback) ->
+        login: (provider, user, _callback, options) ->
             if @server is null 
                 console.error 'not initialize server.'
                 return
 
-            if @apiModule is null 
-                console.error 'not initialize apiModule.'
+            if @tokenModule is null 
+                console.error 'not initialize tokenModule.'
                 return
 
-            server.request(server.TAG.auth.authorize + '/' + provider, {
-                data: _.assign(user ,server.fields.user, { sid: apiModule.getSid() })
+            options = {} if not options
+            @server.request(@server.TAG.auth.authorize + '/' + provider, {
+                data: _.assign(user, options, { sid: @tokenModule.getSid() })
                 type: 'POST'
                 success: (res) =>
                     # @set res.user, res.user.permissions
-                    apiModule.setToken res.token
+                    @tokenModule.setToken res.token
                     @setLoginState true
                     ## set user in _callback, 앞단에서 아래 코드 추가.
                     # elem = $('<div class="img user"></div>')
@@ -90,15 +91,15 @@ define [
                 console.error 'not initialize server.'
                 return
 
-            if @apiModule is null 
-                console.error 'not initialize apiModule.'
+            if @tokenModule is null 
+                console.error 'not initialize tokenModule.'
                 return
 
-            server.request(server.TAG.auth.clear, {
+            @server.request(@server.TAG.auth.clear, {
                 data: {}
                 'type': 'POST'
                 complete: () =>
-                    apiModule.clear()
+                    @tokenModule.clear()
                     @setLoginState false
             })
             return
