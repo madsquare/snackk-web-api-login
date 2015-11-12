@@ -1,5 +1,7 @@
 define [
+	'lodash'
 ], (
+	_
 ) ->
 	_state = false
 
@@ -7,22 +9,43 @@ define [
 		server : null
 		tokenModule : null
 
+
+		###
+		 * login module init
+		 * @param  {object} server      
+		 * @param  {object} tokenModule 
+		###
 		init : (server, tokenModule) ->
 			@server = server
 			@tokenModule = tokenModule
 			return
 
+
+		###
+		 * 로그인 상태 저장.
+		 * @param {Boolean} boolean 
+		###
 		setLoginState : (boolean) ->
 			_state = boolean
 			return
 
 
+		###
+		 * 로그인 상태 반환.
+		 * @return {Boolean} return loginState
+		###
 		isLoggedIn : () ->
 			return _state
 
 
-	# request authorize
-	# login
+		###
+		 * 로그인.
+		 * @param  {string} provider  tosq, facebook, googleplus, etc...
+		 * @param  {object} user      id, passwd
+		 * @param  {object} _callback return res, error
+		 * @param  {object} options   fileds
+		 * @return {object}           ajax 
+		###
 		login: (provider, user, _callback, options) ->
 			if @server is null 
 					console.error 'not initialize server.'
@@ -57,34 +80,13 @@ define [
 					#     tosqToast.showError $.t('form.warning.incorrect_passwd')
 					_callback.error(er) if _callback && _callback.error
 			})
-			return
 
 
- #      # set user data
- #      setUser: (user, permissions, state) ->
- #          _user = user
- #          server.setUser _user
- #          # store permission
- #          _permissions = if typeof permissions != 'undefined' then permissions else []
-		# return
-
- #          # TODO 논의 필요.
- #          # 앞단에서 아래 코드 추가.
- #          # if !user
- #          #     _usersChannel = []
-					
- #          # facebookMgr.setUser user
- #          # if !state
- #          #     mediator.trigger('user/update', user)
- #          # else 
- #          #     mediator.trigger('user/update', user, state)
- #          # if !user
- #          #     youtubeDataMgr.logout()
- #          #     facebookMgr.logout()
-	
-
-		# clear user data
-		# logout
+		###
+		 * 로그아웃.
+		 * @param  {object} _callback return res, error
+		 * @return {object}           ajax
+		###
 		logout: (_callback) ->
 			if @server is null 
 				console.error 'not initialize server.'
@@ -106,4 +108,3 @@ define [
 					@setLoginState false
 					_callback.complete(res) if _callback && _callback.complete
 			})
-			return
