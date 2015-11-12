@@ -38,7 +38,7 @@ define [
                 success: (res) =>
                     # @set res.user, res.user.permissions
                     apiModule.setToken res.token
-                    setLoginState true
+                    @setLoginState true
                     ## set user in _callback, 앞단에서 아래 코드 추가.
                     # elem = $('<div class="img user"></div>')
                     # utils.setImage elem, user.picture_url
@@ -93,12 +93,12 @@ define [
             if @apiModule is null 
                 console.error 'not initialize apiModule.'
                 return
-                
-		    server.request(server.TAG.auth.clear, {
-		        data: {}
-		        'type': 'POST'
-		        complete: () =>
-		            apiModule.clear()
-                    setLoginState false
-		        })
-		    return
+
+            server.request(server.TAG.auth.clear, {
+                data: {}
+                'type': 'POST'
+                complete: () =>
+                    apiModule.clear()
+                    @setLoginState false
+            })
+            return
