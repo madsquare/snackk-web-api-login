@@ -40,11 +40,11 @@ define [
 
 		###
 		 * 로그인.
-		 * @param  {string} provider  tosq, facebook, googleplus, etc...
-		 * @param  {object} user      id, passwd
-		 * @param  {object} callback return res, error
-		 * @param  {object} options   fileds
-		 * @return {object}           ajax 
+		 * @param  {string} provider  	tosq, facebook, googleplus, etc...
+		 * @param  {object} user      	id, passwd
+		 * @param  {object} callback	return res, error
+		 * @param  {object} options   	fileds
+		 * @return {object}           	ajax 
 		###
 		login: (provider, user, callback, options) ->
 			if @server is null 
@@ -60,32 +60,18 @@ define [
 				data: _.assign(user, options, { sid: @tokenModule.getSid() })
 				type: 'POST'
 				success: (res) =>
-					# @set res.user, res.user.permissions
 					@tokenModule.setToken res.token
 					@setLoginState true
-					## set user in callback, 앞단에서 아래 코드 추가.
-					# elem = $('<div class="img user"></div>')
-					# utils.setImage elem, user.picture_url
-
-					# tosqToast.show $.t('toast.login_complete', { 'display_name': user.display_name }), elem 
-
-					##
-
 					callback.success(res) if callback && callback.success
 				error: (er) =>
-					## 앞단에서 아래 코드 추가.
-					# if er.type == 'user.incorrect_email'
-					#     tosqToast.showError $.t('form.warning.incorrect_email')
-					# else if er.type == 'user.incorrect_passwd'
-					#     tosqToast.showError $.t('form.warning.incorrect_passwd')
 					callback.error(er) if callback && callback.error
 			})
 
 
 		###
 		 * 로그아웃.
-		 * @param  {object} callback return res, error
-		 * @return {object}           ajax
+		 * @param  {object} callback 	return res, error
+		 * @return {object}           	ajax
 		###
 		logout: (callback) ->
 			if @server is null 
