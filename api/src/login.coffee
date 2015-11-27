@@ -41,7 +41,7 @@ define [
 		###
 		 * 로그인.
 		 * @param  {string} provider  	tosq, facebook, googleplus, etc...
-		 * @param  {object} user      	id, passwd
+		 * @param  {object} user      	id, passwd, token
 		 * @param  {object} callback	return res, error
 		 * @param  {object} options   	fileds
 		 * @return {object}           	ajax 
