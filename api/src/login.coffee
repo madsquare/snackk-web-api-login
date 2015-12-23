@@ -92,7 +92,7 @@ define [
 				complete: () =>
 					@tokenModule.clear()
 					@setLoginState false
-					callback.complete(res) if callback && callback.complete
+					callback.complete() if callback && callback.complete
 			})
 
 	return login
